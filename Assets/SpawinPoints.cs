@@ -1,39 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class SpawinPoints : MonoBehaviour
 {
     public Transform playerSpawnPoints;
     Transform[] spawnPoints;
     public bool respawn=false;
-    public bool lastToggle = false;
-    public int i;
+    bool lastToggle = false;
+    FirstPersonController temp;
     // Start is called before the first frame update
     void Start()
     {
         spawnPoints = playerSpawnPoints.GetComponentsInChildren<Transform>();
         print(spawnPoints.Length);
-        
+        temp = GetComponent<FirstPersonController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (lastToggle)
+        if (lastToggle!=respawn)
         {
+            temp.enabled = false;
             Respawn();
             respawn = false;
-            transform.position = spawnPoints[i].transform.position;
+           
         }
         else
         {
             lastToggle = respawn;
+            temp.enabled = true;
         }
     }
     public void Respawn()
     {
-         i = Random.Range(1, spawnPoints.Length);
-       
+        int i = Random.Range(1, spawnPoints.Length);
+        transform.position = spawnPoints[i].transform.position;
     }
 }
